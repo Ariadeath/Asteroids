@@ -2,10 +2,12 @@ import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 import pygame 
+import sys
 import constants
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from shot import Shot
 
 def main():
     pygame.init()
@@ -17,16 +19,19 @@ def main():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     # Set containers
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable,)
+    Shot.containers = (shots, updatable, drawable)
 
     # Create Instances
     player_instance = Player(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
-    #Game loop
+    
+    # Game loop
     running = True
     while running:
         #Handle events
@@ -37,12 +42,18 @@ def main():
         #Update game state
         updatable.update(dt) # Where to hook in update method
         
-        #Render
+        # Check for collisions
+        for asteroid in asteroids:
+            if player_instance.is_colliding(asteroid):
+                print("Game over!")
+                sys.exit()
+
+        # Render
         screen.fill("black")
         for drawable_obj in drawable:
             drawable_obj.draw(screen)
         
-        #Updates the display
+        # Updates the display
         pygame.display.flip()
 
         # Regulates FPS
