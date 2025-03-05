@@ -20,10 +20,11 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        #Fills the screen with black
-        screen.fill("black")
+        #Update game state
+        player_instance.update(dt) # Where to hook in update method
         
-        #Creates Player
+        #Render
+        screen.fill("black")
         player_instance.draw(screen)
         
         #Updates the display
