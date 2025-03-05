@@ -10,7 +10,7 @@ class Asteroid(CircleShape):
     def draw(self, surface):
         pygame.draw.circle(
             surface, #Surface for showing up
-            pygame.Color("white"), # Color
+            "white", # Color
             (self.position.x, self.position.y), #Position
             self.radius, # Radius
             2 # Width parameter
